@@ -4,7 +4,7 @@ require('dotenv').config()
 const connectDB = require('./db/connect')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-
+const authRouter = require('./routes/auth/auth-routes')
 
 app.use(express.json())
 app.use(
@@ -22,6 +22,7 @@ app.use(
   })
 )
 app.use(cookieParser());
+app.use("/api/auth", authRouter);
 
 app.get('/', (req,res) => {
   res.send(`<h1>Home Page</h1>`)
