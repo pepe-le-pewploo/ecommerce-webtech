@@ -1,7 +1,10 @@
 import CommonForm from "@/components/common/CommonForm";
 import { registerFormControls } from "@/config/Index";
+import { useToast } from "@/hooks/use-toast";
+import { registerUser } from "@/store/auth-slice";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const initialState = {
   userName: '',
@@ -11,9 +14,33 @@ const initialState = {
 
 const AuthRegister = () => {
   const [formData, setFormData] = React.useState(initialState);
-  const onSubmit = () => {
-    
-  }
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const {toast} = useToast()
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const data = await dispatch(registerUser(formData));
+      console.log(data) 
+      
+      if(data?.payload?.success){
+        toast({
+          title: data?.payload?.message
+        })
+        navigate("/auth/login"); 
+      } else {
+        toast({
+          title: data?.payload?.message,
+          variant: 'destructive'
+        })
+      }
+    } catch (error) {
+      console.error("Registration failed:", error); 
+    }
+  };
+  
+
+  //console.log(formData)
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">

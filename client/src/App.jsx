@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 //import './App.css'
@@ -18,15 +18,32 @@ import ShoppingHome from "./pages/shopping-view/ShoppingHome";
 import ShoppingCheckout from "./pages/shopping-view/ShoppingCheckout";
 import CheckAuth from "./components/common/CheckAuth";
 import UnauthPage from "./pages/unauth-page";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./store/auth-slice";
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 
 function App() {
-  const isAuthenticated = false;
-  const user = {role: 'user'};
+  // const isAuthenticated = false;
+  // const user = {role: 'user'};
+
+  const {user, isAuthenticated,isLoading} = useSelector(state => state.auth)
+  console.log('from appjsx ')
+  console.log(user, isAuthenticated)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(checkAuth())
+  }, [dispatch])
+
+  if(isLoading) return <Skeleton className="w-[100px] h-[20px] rounded-full" />
+
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
-      <h1>Ecommerece</h1>
+      {/* <h1>Ecommerece</h1> */}
       <Routes>
         <Route
           path="/auth"

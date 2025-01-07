@@ -9,7 +9,7 @@ const CheckAuth = ({
 
   const loaction = useLocation();
 
-  console.log(isAuthenticated, location, user)
+  console.log(isAuthenticated, location, user?.role)
   
   if(!isAuthenticated && !(location.pathname.includes('/login') || location.pathname.includes('/register'))){
     return <Navigate to='/auth/login'/>
