@@ -5,6 +5,7 @@ const connectDB = require('./db/connect')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const authRouter = require('./routes/auth/auth-routes')
+const adminProductsRouter = require('./routes/admin/products-routes')
 
 app.use(express.json())
 app.use(
@@ -23,6 +24,7 @@ app.use(
 )
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
+app.use("/api/admin/products", adminProductsRouter);
 
 app.get('/', (req,res) => {
   res.send(`<h1>Home Page</h1>`)
@@ -39,5 +41,7 @@ const start = async () => {
     console.log(error)
   }
 }
+
+
 
 start();
