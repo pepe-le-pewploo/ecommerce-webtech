@@ -21,6 +21,7 @@ import UnauthPage from "./pages/unauth-page";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/auth-slice";
 import { Skeleton } from "@/components/ui/skeleton"
+import ShoppingListing from "./pages/shopping-view/ShoppingListing";
 
 
 
@@ -80,6 +81,7 @@ function App() {
           <Route path="account" element={<ShoppingAccount />} />
           <Route path="home" element={<ShoppingHome />} />
           <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="listing" element={<ShoppingListing />} />
         </Route>
         <Route path="unauth-page" element={<UnauthPage/>} />
         <Route path="*" element={<NotFound />} />
