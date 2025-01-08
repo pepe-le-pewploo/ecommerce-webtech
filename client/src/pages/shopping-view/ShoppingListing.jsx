@@ -1,3 +1,5 @@
+
+import ProductDetailsDialog from "@/components/shopping-view/Product-details";
 import ShoppingProductTile from "@/components/shopping-view/Product-tile";
 import ProductFilter from "@/components/shopping-view/ProductFilter";
 import { Button } from "@/components/ui/button";
@@ -8,7 +10,7 @@ import {
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config/Index";
-import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
+import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/products-slice";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ArrowUpDownIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -34,10 +36,11 @@ function createSearchParamsHelper(filterParams) {
 
 const ShoppingListing = () => {
   const dispatch = useDispatch();
-  const { productList } = useSelector((state) => state.shopProducts);
+  const { productList, productDetails } = useSelector((state) => state.shopProducts);
   const [filters, setFilters] = useState(null)
   const [sort, setSort] = useState(null)
   const [searchParams, setSearchParams] = useSearchParams()
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
   const handleSort = (value) => {
     console.log(value, 'inside handle sort');
@@ -68,6 +71,10 @@ const ShoppingListing = () => {
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
 
+  const handleGetProductDetails = (getCurrentProductId) => {
+    console.log(getCurrentProductId, "getCurrentProductId");
+    dispatch(fetchProductDetails(getCurrentProductId))
+  }
   useEffect(() => {
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
@@ -87,7 +94,11 @@ const ShoppingListing = () => {
     dispatch(fetchAllFilteredProducts({filterParams: filters, sortParams:sort}));
   }, [dispatch, sort, filters]);
 
-  console.log(productList, searchParams, "shoppingList");
+  useEffect(() => {
+    if (productDetails !== null) setOpenDetailsDialog(true);
+  }, [productDetails]);
+
+  console.log(productDetails, "shoppingList");
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
       <ProductFilter filters={filters} handleFilter={handleFilter}/>
@@ -128,11 +139,13 @@ const ShoppingListing = () => {
                 <ShoppingProductTile
                   key={productItem._id}
                   product={productItem}
+                  handleGetProductDetails={handleGetProductDetails}
                 />
               ))
             : null}
         </div>
       </div>
+      <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} productDetails={productDetails}/>
     </div>
   );
 };
