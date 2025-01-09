@@ -10,6 +10,8 @@ import {
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config/Index";
+import { useToast } from "@/hooks/use-toast";
+import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/products-slice";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ArrowUpDownIcon } from "lucide-react";
@@ -37,10 +39,12 @@ function createSearchParamsHelper(filterParams) {
 const ShoppingListing = () => {
   const dispatch = useDispatch();
   const { productList, productDetails } = useSelector((state) => state.shopProducts);
+  const {user} = useSelector(state=>state.auth);
   const [filters, setFilters] = useState(null)
   const [sort, setSort] = useState(null)
   const [searchParams, setSearchParams] = useSearchParams()
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const {toast} = useToast();
 
   const handleSort = (value) => {
     console.log(value, 'inside handle sort');
@@ -75,6 +79,18 @@ const ShoppingListing = () => {
     console.log(getCurrentProductId, "getCurrentProductId");
     dispatch(fetchProductDetails(getCurrentProductId))
   }
+
+  const handleAddtoCart = async (getCurrentProductId) => {
+    console.log(getCurrentProductId)
+    const data = await dispatch(addToCart({userId: user?.id, productId: getCurrentProductId, quantity:1}))
+    console.log(data)
+    if(data?.payload?.success) {
+      dispatch(fetchCartItems(user?.id))
+      toast({
+        title: 'Product is added to the cart'
+      })
+    }
+  }
   useEffect(() => {
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
@@ -89,16 +105,15 @@ const ShoppingListing = () => {
 
   useEffect(() => {
     if(filters !== null && sort !== null) {
-
+      dispatch(fetchAllFilteredProducts({filterParams: filters, sortParams:sort}));
     }
-    dispatch(fetchAllFilteredProducts({filterParams: filters, sortParams:sort}));
+    
   }, [dispatch, sort, filters]);
 
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
-  console.log(productDetails, "shoppingList");
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
       <ProductFilter filters={filters} handleFilter={handleFilter}/>
@@ -140,6 +155,7 @@ const ShoppingListing = () => {
                   key={productItem._id}
                   product={productItem}
                   handleGetProductDetails={handleGetProductDetails}
+                  handleAddtoCart={handleAddtoCart}
                 />
               ))
             : null}
