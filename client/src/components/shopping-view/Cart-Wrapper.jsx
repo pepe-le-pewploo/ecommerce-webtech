@@ -2,8 +2,10 @@ import React from "react";
 import { SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 import { Button } from "../ui/button";
 import UserCartItemsContent from "./Cart-Items-Content";
+import { useNavigate } from "react-router-dom";
 
 const UserCartWrapper = ({cartItems}) => {
+  const navigate = useNavigate();
   const totalCartAmount =
     cartItems && cartItems.length > 0
       ? cartItems.reduce(
