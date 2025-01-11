@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import UserCartItemsContent from "./Cart-Items-Content";
 import { useNavigate } from "react-router-dom";
 
-const UserCartWrapper = ({cartItems}) => {
+const UserCartWrapper = ({cartItems, setOpenCartSheet}) => {
   const navigate = useNavigate();
   const totalCartAmount =
     cartItems && cartItems.length > 0

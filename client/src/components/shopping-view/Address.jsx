@@ -119,6 +119,7 @@ const Address = () => {
                 addressInfo={singleAddressItem}
                 handleDeleteAddress={handleDeleteAddress}
                 handleEditAddress={handleEditAddress}
+                key={singleAddressItem._id}
               />
             ))
           : null}
