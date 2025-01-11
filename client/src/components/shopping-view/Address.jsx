@@ -20,7 +20,7 @@ const initialAddressFormData = {
   notes: "",
 };
 
-const Address = () => {
+const Address = ({setCurrentSelectedAddress}) => {
   const [formData, setFormData] = useState(initialAddressFormData);
   const { addressList } = useSelector((state) => state.shopAddress);
   const { toast } = useToast();
@@ -120,6 +120,7 @@ const Address = () => {
                 handleDeleteAddress={handleDeleteAddress}
                 handleEditAddress={handleEditAddress}
                 key={singleAddressItem._id}
+                setCurrentSelectedAddress={setCurrentSelectedAddress}
               />
             ))
           : null}

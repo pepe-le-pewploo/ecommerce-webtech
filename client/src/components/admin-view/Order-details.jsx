@@ -4,14 +4,15 @@ import { Label } from '../ui/label';
 import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
 import CommonForm from '../common/CommonForm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '@/hooks/use-toast';
+import { getAllOrdersForAdmin, getOrderDetailsForAdmin, updateOrderStatus } from '@/store/admin/order-slice';
 
 const initialFormData = {
   status: "",
 };
 
-const AdminOrderDetailsView = () => {
+const AdminOrderDetailsView = ({orderDetails}) => {
   const [formData, setFormData] = useState(initialFormData);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const AdminOrderDetailsView = () => {
   
   const handleUpdateStatus = async (event) => {
     event.preventDefault();
+    console.log(formData, 'handleUpdateStatus')
     const { status } = formData;
 
     const data = await dispatch(
@@ -85,7 +87,7 @@ const AdminOrderDetailsView = () => {
             <ul className="grid gap-3">
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
                 ? orderDetails?.cartItems.map((item) => (
-                    <li className="flex items-center justify-between">
+                    <li key={item.productId} className="flex items-center justify-between">
                       <span>Title: {item.title}</span>
                       <span>Quantity: {item.quantity}</span>
                       <span>Price: ${item.price}</span>

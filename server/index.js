@@ -9,6 +9,8 @@ const adminProductsRouter = require('./routes/admin/products-routes')
 const shopProductsRouter = require('./routes/shop/products-routes')
 const shopCartRouter = require("./routes/shop/cart-routes");
 const shopAddressRouter = require("./routes/shop/address-routes");
+const shopOrderRouter = require("./routes/shop/order-routes")
+const adminOrderRouter = require("./routes/admin/order-routes")
 
 
 app.use(express.json())
@@ -32,6 +34,8 @@ app.use("/api/admin/products", adminProductsRouter);
 app.use('/api/shop/products', shopProductsRouter);
 app.use('/api/shop/cart', shopCartRouter)
 app.use('/api/shop/address', shopAddressRouter);
+app.use('/api/shop/order', shopOrderRouter);
+app.use('/api/admin/orders', adminOrderRouter);
 
 app.get('/', (req,res) => {
   res.send(`<h1>Home Page</h1>`)
@@ -43,6 +47,8 @@ const port = process.env.PORT || 5000;
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
+    // console.log(process.env.PAYPAL_SECRET_KEY, "Secret key")
+    // console.log(process.env.PAYPAL_CLIENT_ID, "Client ID")
     app.listen(port, console.log(`Server is listening on port ${port}...`));
   } catch (error) {
     console.log(error)

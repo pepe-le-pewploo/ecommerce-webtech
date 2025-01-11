@@ -12,31 +12,32 @@ import {
 } from "../ui/table";
 import AdminOrderDetailsView from "./order-details";
 import { useDispatch, useSelector } from "react-redux";
-// import {
-//   getAllOrdersForAdmin,
-//   getOrderDetailsForAdmin,
-//   resetOrderDetails,
-// } from "@/store/admin/order-slice";
+import {
+  getAllOrdersForAdmin,
+  getOrderDetailsForAdmin,
+  resetOrderDetails,
+} from "@/store/admin/order-slice";
 import { Badge } from "../ui/badge";
+
 
 
 const AdminOrdersView = () => {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-  //const { orderList, orderDetails } = useSelector((state) => state.adminOrder);
+  const { orderList, orderDetails } = useSelector((state) => state.adminOrder);
   const dispatch = useDispatch();
 
   function handleFetchOrderDetails(getId) {
-    //dispatch(getOrderDetailsForAdmin(getId));
+    dispatch(getOrderDetailsForAdmin(getId));
   }
 
   useEffect(() => {
-    //dispatch(getAllOrdersForAdmin());
+    dispatch(getAllOrdersForAdmin());
   }, [dispatch]);
 
-  //console.log(orderDetails, "orderList");
+  console.log(orderDetails, "orderList");
 
   useEffect(() => {
-    //if (orderDetails !== null) setOpenDetailsDialog(true);
+    if (orderDetails !== null) setOpenDetailsDialog(true);
   }, [orderDetails]);
   return (
     <Card>
@@ -59,7 +60,7 @@ const AdminOrdersView = () => {
           <TableBody>
             {orderList && orderList.length > 0
               ? orderList.map((orderItem) => (
-                  <TableRow>
+                  <TableRow key={orderItem?._id}>
                     <TableCell>{orderItem?._id}</TableCell>
                     <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
                     <TableCell>
@@ -81,6 +82,7 @@ const AdminOrdersView = () => {
                         open={openDetailsDialog}
                         onOpenChange={() => {
                           setOpenDetailsDialog(false);
+                          dispatch(resetOrderDetails())
                         }}
                       >
                         <Button
