@@ -22,6 +22,13 @@ export const registerFormControls = [
     componentType: "input",
     type: "password",
   },
+  {
+    name: "bankId",
+    label: "Bank Account",
+    placeholder: "Enter your Bank Account",
+    componentType: "input",
+    type: "text",
+  },
 ];
 
 export const loginFormControls = [

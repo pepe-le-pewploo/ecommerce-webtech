@@ -1,5 +1,5 @@
 import CommonForm from "@/components/common/CommonForm";
-import { registerFormControls } from "@/config/Index";
+import { registerFormControls } from "@/config/index";
 import { useToast } from "@/hooks/use-toast";
 import { registerUser } from "@/store/auth-slice";
 import React from "react";
@@ -9,8 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 const initialState = {
   userName: '',
   email: '',
-  password: '',
-  bankId: ''
+  password: ''
 }
 
 const AuthRegister = () => {

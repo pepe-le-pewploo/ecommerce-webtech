@@ -12,9 +12,9 @@ export const registerUser = createAsyncThunk(
   "/auth/register",
 
   async (formData) => {
-    console.log(formData, 'register')
+    console.log(formData, "AsyncThunk Register")
     const response = await axios.post(
-      "http://localhost:5000/api/auth/register",
+      "http://localhost:5000/api/bank/auth/register",
       formData,
       {
         withCredentials: true,
@@ -28,8 +28,9 @@ export const loginUser = createAsyncThunk(
   "/auth/login",
 
   async (formData) => {
+    console.log(formData, "AsyncThunk Login")
     const response = await axios.post(
-      "http://localhost:5000/api/auth/login",
+      "http://localhost:5000/api/bank/auth/login",
       formData,
       {
         withCredentials: true,
@@ -49,7 +50,7 @@ export const logoutUser = createAsyncThunk(
 
   async () => {
     const response = await axios.post(
-      "http://localhost:5000/api/auth/logout",
+      "http://localhost:5000/api/bank/auth/logout",
       {},
       {
         withCredentials: true,
@@ -65,7 +66,7 @@ export const checkAuth = createAsyncThunk(
 
   async (formData) => {
     const response = await axios.get(
-      "http://localhost:5000/api/auth/check-auth",
+      "http://localhost:5000/api/bank/auth/check-auth",
       {
         withCredentials: true,
       }
@@ -74,6 +75,7 @@ export const checkAuth = createAsyncThunk(
     return response.data;
   }
 );
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -99,7 +101,6 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.user = !action.payload.success? null: action.payload.user;
       state.isAuthenticated = !action.payload.success? false: true;
-      console.log(action.payload.user, "From Login")
     }).addCase(loginUser.rejected, (state,action) => {
       state.isLoading = false;
       state.user = null;

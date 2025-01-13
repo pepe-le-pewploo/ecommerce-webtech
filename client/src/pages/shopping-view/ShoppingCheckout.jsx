@@ -16,6 +16,7 @@ const ShoppingCheckout = () => {
   const { approvalURL } = useSelector((state) => state.shopOrder);
   const {toast} = useToast()
 
+  console.log(user, "Checkout");
   const totalCartAmount =
     cartItems && cartItems.items && cartItems.items.length > 0
       ? cartItems.items.reduce(

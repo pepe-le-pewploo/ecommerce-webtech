@@ -1,12 +1,12 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../../models/User");
+const Bankuser = require("../../models/bank")
 
 const registerUser = async (req, res) => {
-  const { userName, email, password, bankId } = req.body;
+  const { userName, email, password } = req.body;
 
   try {
-    const checkUser = await User.findOne({ email });
+    const checkUser = await Bankuser.findOne({ email });
     if (checkUser)
       return res.json({
         success: false,
@@ -14,11 +14,10 @@ const registerUser = async (req, res) => {
       });
 
     const hashPassword = await bcrypt.hash(password, 12);
-    const newUser = new User({
+    const newUser = new Bankuser({
       userName,
       email,
       password: hashPassword,
-      bankId
     });
 
     await newUser.save();
@@ -40,7 +39,7 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const checkUser = await User.findOne({ email });
+    const checkUser = await Bankuser.findOne({ email });
     if (!checkUser)
       return res.json({
         success: false,
@@ -60,26 +59,23 @@ const loginUser = async (req, res) => {
     const token = jwt.sign(
       {
         id: checkUser._id,
-        role: checkUser.role,
+        balance: checkUser.balance,
         email: checkUser.email,
         userName: checkUser.userName,
-        bankId: checkUser.bankId
       },
       "CLIENT_SECRET_KEY",
       { expiresIn: "60m" }
     );
 
-    console.log(checkUser.bankId, "BankId")
+    console.log(checkUser, "BankId")
 
     res.cookie("token", token, { httpOnly: true, secure: false }).json({
       success: true,
       message: "Logged in successfully",
       user: {
         email: checkUser.email,
-        role: checkUser.role,
         id: checkUser._id,
         userName: checkUser.userName,
-        bankId: checkUser.bankId
       },
     });
   } catch (e) {

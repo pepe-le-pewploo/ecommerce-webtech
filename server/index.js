@@ -12,12 +12,14 @@ const shopAddressRouter = require("./routes/shop/address-routes");
 const shopOrderRouter = require("./routes/shop/order-routes")
 const adminOrderRouter = require("./routes/admin/order-routes")
 const shopSearchRouter = require("./routes/shop/search-routes");
+const bankAuthRouter = require("./routes/bank/bank-auth-route")
+const bankActivityRouter = require("./routes/bank/bank-activity-route")
 
 
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: [
       "Content-Type",
@@ -38,6 +40,8 @@ app.use('/api/shop/address', shopAddressRouter);
 app.use('/api/shop/order', shopOrderRouter);
 app.use('/api/admin/orders', adminOrderRouter);
 app.use("/api/shop/search", shopSearchRouter);
+app.use('/api/bank/auth', bankAuthRouter)
+app.use('/api/bank/activity', bankActivityRouter)
 
 app.get('/', (req,res) => {
   res.send(`<h1>Home Page</h1>`)

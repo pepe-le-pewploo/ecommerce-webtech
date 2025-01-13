@@ -1,0 +1,64 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure body takes the full height of the window */
+  width: 100%; /* Ensure body takes the full width of the window */
+  font-family: Arial, sans-serif;
+  background-color: #e0dcdc;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start; /* Align items at the top */
+  gap: 60px; /* Add space between the logo and the list */
+  padding: 20px 40px 20px 20px; /* Add some padding for spacing */
+  background-color:#293a49; /* Black background */
+  color: white; /* Text color for better visibility */
+  width: 100%; /* Make the header span the full width */
+  height: auto; /* Adjust the height based on the content */
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.list {
+  display: flex;
+  flex-direction: column; /* Stack the unordered lists vertically */
+  gap: 12px; /* Space between the unordered lists */
+}
+
+.unordered-list-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.unordered-list {
+  display: flex;
+  flex-direction: row; /* Arrange list items in a row */
+  gap: 72px; /* Space between list items */
+  list-style: none; /* Remove bullet points */
+}
+
+.unordered-list li {
+  color: #fffcfc; /* Default color */
+  cursor: pointer;
+  transition: color 0.3s ease; /* Smooth color change */
+}
+
+.unordered-list li:hover {
+  color: #c1c7cf; /* Change color on hover */
+}
+
+.right-end-container {
+  display: flex;
+  gap:10px;
+}
