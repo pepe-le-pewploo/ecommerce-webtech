@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "@/store/auth-slice";
+import bankLogo from '../../../assets/PRISM.png'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -13,7 +14,13 @@ const Header = () => {
   }
   return (
     <div className="header">
-      <div className="logo">Header</div>
+      <div className="logo">
+        <img src={bankLogo} alt="Bank Logo" />
+        <div className="logotitle">
+          {/* <h1>Prism</h1>
+          <p>Banking</p> */}
+        </div>
+      </div>
       <div className="list">
         <div className="unordered-list-wrapper">
           <ul className="unordered-list">

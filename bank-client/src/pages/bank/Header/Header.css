@@ -14,6 +14,33 @@ html, body {
   background-color: #e0dcdc;
 }
 
+
+
+img {
+  height: 65px;
+  width: 50px;
+}
+
+.logotitle{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logotitle>h1 {
+  font-weight: 800;
+  font-size: 32px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.logotitle>p {
+  margin-top: 0px;
+  font-size: 16px;
+  font-weight: 500;
+  padding-top: 0px;
+}
 .header {
   display: flex;
   align-items: flex-start; /* Align items at the top */
@@ -25,10 +52,10 @@ html, body {
   height: auto; /* Adjust the height based on the content */
 }
 
-.logo {
+/* .logo {
   font-size: 24px;
   font-weight: bold;
-}
+} */
 
 .list {
   display: flex;
@@ -59,6 +86,7 @@ html, body {
 }
 
 .right-end-container {
+  padding-left: 130px;
   display: flex;
   gap:10px;
 }

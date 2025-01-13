@@ -10,6 +10,7 @@ const AddressCard = ({
   setCurrentSelectedAddress,
   selectedId,
 }) => {
+  console.log(selectedId?._id)
   return (
     <Card
       onClick={
@@ -17,9 +18,9 @@ const AddressCard = ({
           ? () => setCurrentSelectedAddress(addressInfo)
           : null
       }
-      className={`cursor-pointer border-red-700 ${
+      className={`cursor-pointer ${
         selectedId?._id === addressInfo?._id
-          ? "border-red-900 border-[4px]"
+          ? "border-black border-[3px]"
           : "border-black"
       }`}
     >

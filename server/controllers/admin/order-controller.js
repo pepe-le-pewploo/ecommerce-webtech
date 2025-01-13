@@ -63,8 +63,13 @@ const updateOrderStatus = async (req, res) => {
         message: "Order not found!",
       });
     }
+    if(orderStatus === 'rejected') {
+      await Order.findByIdAndUpdate(id, { orderStatus, paymentStatus: 'refunded' });
+    } else {
+      await Order.findByIdAndUpdate(id, { orderStatus });
+    }
 
-    await Order.findByIdAndUpdate(id, { orderStatus });
+    // await Order.findByIdAndUpdate(id, { orderStatus });
 
     res.status(200).json({
       success: true,

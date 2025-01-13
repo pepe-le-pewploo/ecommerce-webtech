@@ -13,7 +13,7 @@ const Body = () => {
             Bank on the right partner
           </h1>
           <p className='arimo-class text-xs font-semibold tracking-tight text-left'>
-            Ecommerce Banking is proud to be the partner of Ecommerce Shopping 
+            Prism Banking Ltd. is proud to be the global partner of SnapCart 
           </p>
         </div>
       </div>

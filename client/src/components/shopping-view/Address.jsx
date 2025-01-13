@@ -20,7 +20,7 @@ const initialAddressFormData = {
   notes: "",
 };
 
-const Address = ({setCurrentSelectedAddress}) => {
+const Address = ({setCurrentSelectedAddress, selectedId}) => {
   const [formData, setFormData] = useState(initialAddressFormData);
   const { addressList } = useSelector((state) => state.shopAddress);
   const { toast } = useToast();
@@ -121,6 +121,7 @@ const Address = ({setCurrentSelectedAddress}) => {
                 handleEditAddress={handleEditAddress}
                 key={singleAddressItem._id}
                 setCurrentSelectedAddress={setCurrentSelectedAddress}
+                selectedId={selectedId}
               />
             ))
           : null}
