@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DialogContent } from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Badge } from '../ui/badge';
@@ -7,6 +7,7 @@ import CommonForm from '../common/CommonForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '@/hooks/use-toast';
 import { getAllOrdersForAdmin, getOrderDetailsForAdmin, updateOrderStatus } from '@/store/admin/order-slice';
+import { depositMoney, fetchBalance, withdrawBalance } from '@/store/bank-slice';
 
 const initialFormData = {
   status: "",
@@ -17,6 +18,7 @@ const AdminOrderDetailsView = ({orderDetails}) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { toast } = useToast();
+  const {bank} = useSelector(state=>state.bank)
 
   console.log(orderDetails, "orderDetailsorderDetails");
   
@@ -24,6 +26,22 @@ const AdminOrderDetailsView = ({orderDetails}) => {
     event.preventDefault();
     console.log(formData, 'handleUpdateStatus')
     const { status } = formData;
+    if(status === 'rejected') {
+      console.log(orderDetails.totalAmount, 'handleUpdateStatus')
+      const amount = Number(orderDetails.totalAmount)
+      console.log(bank)
+      if(bank<amount) {
+        toast({
+          title: 'Order cannot be cancelled due to insufficient funds in your bank',
+          variant: 'destructive'
+        })
+        return
+      }
+      const withdrawData = await dispatch(withdrawBalance({amount: amount}))
+      console.log(withdrawData, "WithdrawData from somewher")
+      const depositData= await dispatch(depositMoney({userId: orderDetails.payerId, amount: amount}))
+      console.log(depositData, "DepositData from somewher")
+    }
 
     const data = await dispatch(
       updateOrderStatus({ id: orderDetails?._id, orderStatus: status })
@@ -39,6 +57,12 @@ const AdminOrderDetailsView = ({orderDetails}) => {
       });
     }
   }
+  useEffect(() => {
+    dispatch(fetchBalance());
+  },[dispatch])
+  console.log(user, "user below fetch")
+  console.log(bank, 'below Fetch')
+  console.log(formData, "Order Admin view")
   return (
     <DialogContent className="sm:max-w-[600px]">
       <div className="grid gap-6">
@@ -131,6 +155,7 @@ const AdminOrderDetailsView = ({orderDetails}) => {
             setFormData={setFormData}
             buttonText={"Update Order Status"}
             onSubmit={handleUpdateStatus}
+            isBtnDisabled={orderDetails?.orderStatus === 'rejected'}
           />
         </div>
       </div>

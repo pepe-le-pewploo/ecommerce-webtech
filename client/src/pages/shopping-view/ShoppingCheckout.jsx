@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import img from "../../assets/account.jpg";
 import Address from '@/components/shopping-view/Address';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +6,9 @@ import UserCartItemsContent from '@/components/shopping-view/Cart-Items-Content'
 import { Button } from '@/components/ui/button';
 import { createNewOrder } from '@/store/shop/order-slice';
 import { useToast } from '@/hooks/use-toast';
+import { depositMoney, fetchBalance, withdrawBalance } from '@/store/bank-slice';
+import { nanoid } from 'nanoid';
+import { useNavigate } from 'react-router-dom';
 
 const ShoppingCheckout = () => {
   const {cartItems} = useSelector(state=>state.shopCart)
@@ -13,8 +16,10 @@ const ShoppingCheckout = () => {
   const {user} = useSelector(state => state.auth)
   const dispatch = useDispatch();
   const [isPaymentStart, setIsPaymemntStart] = useState(false);
-  const { approvalURL } = useSelector((state) => state.shopOrder);
+  // const { approvalURL } = useSelector((state) => state.shopOrder);
   const {toast} = useToast()
+  const {bank} = useSelector(state => state.bank);
+  const navigate = useNavigate()
 
   console.log(user, "Checkout");
   const totalCartAmount =
@@ -29,6 +34,10 @@ const ShoppingCheckout = () => {
           0
         )
       : 0;
+
+      function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
 
   const handleInitiatePaypalPayment = async () =>{
     if (cartItems.length === 0) {
@@ -47,7 +56,6 @@ const ShoppingCheckout = () => {
 
       return;
     }
-
 
     const orderData = {
       userId: user?.id,
@@ -70,30 +78,68 @@ const ShoppingCheckout = () => {
         phone: currentSelectedAddress?.phone,
         notes: currentSelectedAddress?.notes,
       },
-      orderStatus: "pending",
+      orderStatus: "confirmed",
       paymentMethod: "paypal",
       paymentStatus: "pending",
       totalAmount: totalCartAmount,
       orderDate: new Date(),
       orderUpdateDate: new Date(),
-      paymentId: "",
-      payerId: "",
+      paymentId: nanoid(),
+      payerId: user.bankId,
     };
 
     console.log(orderData, 'paypal checkout')
+    const amount = Number(totalCartAmount)
+    if(bank<amount) {
+      navigate('/shop/paypal-return')
+      await delay(2000); 
+      toast({
+        title: 'Insufficient Fund in your account to make the payment',
+        variant: 'destructive'
+      })
+      await delay(2000);
+      navigate('/shop/checkout')
+      return
+    }
+
     const data = await dispatch(createNewOrder(orderData))
     console.log(data, "sangam")
     if (data?.payload?.success) {
-      setIsPaymemntStart(true);
+      navigate('/shop/paypal-return')
+      const withdrawData = await dispatch(withdrawBalance({amount}))
+      console.log(withdrawData, "Withdraw data")
+      if(withdrawData?.payload?.success) {
+        await delay(2000)
+        toast({
+          title: 'Payment Successful, thanks for being with us'
+        })
+        await dispatch(depositMoney({
+          amount: amount,
+          userId: '6784ef3981b524e54479a6c7'
+        }))
+        sessionStorage.removeItem("currentOrderId");
+        await delay(2000)
+        navigate('/shop/payment-success');
+      } else {
+        toast({
+          title: 'Payment Failed, Please try again later',
+          variant: 'destructive'
+        })
+      }
+      // setIsPaymemntStart(true);
     } else {
-      setIsPaymemntStart(false);
+      // setIsPaymemntStart(false);
     }
   }
   console.log(currentSelectedAddress, 'checkout')
-  if (approvalURL) {
-    window.location.href = approvalURL;
-  }
+  // if (approvalURL) {
+  //   window.location.href = approvalURL;
+  // }
 
+  useEffect(() => {
+    dispatch(fetchBalance())
+  }, [dispatch])
+  console.log(bank, "Checkout Page")
   return (
     <div className="flex flex-col">
       <div className="relative h-[300px] w-full overflow-hidden">
@@ -120,7 +166,7 @@ const ShoppingCheckout = () => {
             <Button onClick={handleInitiatePaypalPayment} className="w-full">
               {/*isPaymentStart
                 ? "Processing Paypal Payment..."
-                :*/ "Checkout with Paypal"}
+                :*/ "Checkout"}
             </Button>
           </div>
         </div>

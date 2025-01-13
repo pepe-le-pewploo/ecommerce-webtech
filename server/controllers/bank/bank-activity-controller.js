@@ -34,8 +34,8 @@ const addMoneyToAccount = async (req, res) => {
 
 const getBalance = async (req, res) => {
   try {
-    console.log(req.user, "getBalance")
-    const userId = req.user.id; // Assuming `req.user` contains the authenticated user's info
+    //console.log(req.user, "getBalance")
+    const userId = req.user.bankId? req.user.bankId : req.user.id; // Assuming `req.user` contains the authenticated user's info
   
     // Find the user by ID
     const user = await Bankuser.findById(userId);
@@ -59,7 +59,7 @@ const getBalance = async (req, res) => {
 const withdrawMoney = async (req, res) => {
   try {
     const { amount } = req.body;
-    const userId = req.user.id; // Assuming `req.user` contains the authenticated user's info
+    const userId = req.user.bankId? req.user.bankId : req.user.id; // Assuming `req.user` contains the authenticated user's info
     console.log(userId, amount, "Withdraw Money")
     // Validate the amount
     if (!amount || amount <= 0) {

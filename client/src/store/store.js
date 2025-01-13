@@ -7,6 +7,7 @@ import shopAddressSlice from './shop/address-slice/index.js'
 import shopOrderSlice from './shop/order-slice/index.js'
 import adminOrderSlice from './admin/order-slice/index.js'
 import shopSearchSlice from "./shop/search-slice";
+import bankReducer from './bank-slice/index.js'
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     shopOrder: shopOrderSlice,
     adminOrder: adminOrderSlice,
     shopSearch: shopSearchSlice,
+    bank: bankReducer
   }
 })
 

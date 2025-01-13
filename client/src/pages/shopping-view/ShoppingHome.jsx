@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 
+
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
   { id: "women", label: "Women", icon: CloudLightning },
@@ -58,6 +59,7 @@ const ShoppingHome = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const {bank} = useSelector(state=> state.bank);
 
   function handleNavigateToListingPage(getCurrentItem, section) {
     sessionStorage.removeItem("filters");
@@ -114,7 +116,7 @@ const ShoppingHome = () => {
   console.log(productList, "productList");
 
   console.log(user, "From HomePage")
-
+  console.log(bank, "from homepage")
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative w-full h-[600px] overflow-hidden">

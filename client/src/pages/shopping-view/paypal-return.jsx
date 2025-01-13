@@ -6,28 +6,28 @@ import { capturePayment } from "@/store/shop/order-slice";
 
 
 const PaypalReturnPage = () => {
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const paymentId = params.get("paymentId");
-  const payerId = params.get("PayerID");
+  // const dispatch = useDispatch();
+  // const location = useLocation();
+  // const params = new URLSearchParams(location.search);
+  // const paymentId = params.get("paymentId");
+  // const payerId = params.get("PayerID");
 
-  useEffect(() => {
-    const funcCall = async () => {
-      if (paymentId && payerId) {
-        const orderId = JSON.parse(sessionStorage.getItem("currentOrderId"));
+  // useEffect(() => {
+  //   const funcCall = async () => {
+  //     if (paymentId && payerId) {
+  //       const orderId = JSON.parse(sessionStorage.getItem("currentOrderId"));
 
-        const data = await dispatch(capturePayment({ paymentId, payerId, orderId }));
-        console.log(data, "paypal return");
+  //       const data = await dispatch(capturePayment({ paymentId, payerId, orderId }));
+  //       console.log(data, "paypal return");
     
-        if (data?.payload?.success) {
-          sessionStorage.removeItem("currentOrderId");
-          window.location.href = "/shop/payment-success";
-        }
-      }
-    };
-    funcCall();
-  }, [paymentId, payerId, dispatch]);
+  //       if (data?.payload?.success) {
+  //         sessionStorage.removeItem("currentOrderId");
+  //         window.location.href = "/shop/payment-success";
+  //       }
+  //     }
+  //   };
+  //   funcCall();
+  // }, [paymentId, payerId, dispatch]);
 
   return (
     <Card>
