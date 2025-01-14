@@ -26,7 +26,7 @@ const AdminOrderDetailsView = ({orderDetails}) => {
     event.preventDefault();
     console.log(formData, 'handleUpdateStatus')
     const { status } = formData;
-    if(status === 'rejected') {
+    if(status === 'Rejected') {
       console.log(orderDetails.totalAmount, 'handleUpdateStatus')
       const amount = Number(orderDetails.totalAmount)
       console.log(bank)
@@ -92,9 +92,9 @@ const AdminOrderDetailsView = ({orderDetails}) => {
             <Label>
               <Badge
                 className={`py-1 px-3 ${
-                  orderDetails?.orderStatus === "confirmed"
+                  orderDetails?.orderStatus === "Confirmed"
                     ? "bg-green-500"
-                    : orderDetails?.orderStatus === "rejected"
+                    : orderDetails?.orderStatus === "Rejected"
                     ? "bg-red-600"
                     : "bg-black"
                 }`}
@@ -155,7 +155,7 @@ const AdminOrderDetailsView = ({orderDetails}) => {
             setFormData={setFormData}
             buttonText={"Update Order Status"}
             onSubmit={handleUpdateStatus}
-            isBtnDisabled={orderDetails?.orderStatus === 'rejected'}
+            isBtnDisabled={orderDetails?.orderStatus === 'Rejected'}
           />
         </div>
       </div>

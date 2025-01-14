@@ -63,7 +63,7 @@ const updateOrderStatus = async (req, res) => {
         message: "Order not found!",
       });
     }
-    if(orderStatus === 'rejected') {
+    if(orderStatus === 'Rejected') {
       await Order.findByIdAndUpdate(id, { orderStatus, paymentStatus: 'refunded' });
     } else {
       await Order.findByIdAndUpdate(id, { orderStatus });

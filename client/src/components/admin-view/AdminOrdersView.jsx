@@ -66,9 +66,9 @@ const AdminOrdersView = () => {
                     <TableCell>
                       <Badge
                         className={`py-1 px-3 ${
-                          orderItem?.orderStatus === "confirmed"
+                          orderItem?.orderStatus === "Confirmed"
                             ? "bg-green-500"
-                            : orderItem?.orderStatus === "rejected"
+                            : orderItem?.orderStatus === "Rejected"
                             ? "bg-red-600"
                             : "bg-black"
                         }`}

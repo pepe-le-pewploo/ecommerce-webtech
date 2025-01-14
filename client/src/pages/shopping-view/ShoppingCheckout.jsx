@@ -78,7 +78,7 @@ const ShoppingCheckout = () => {
         phone: currentSelectedAddress?.phone,
         notes: currentSelectedAddress?.notes,
       },
-      orderStatus: "confirmed",
+      orderStatus: "Confirmed",
       paymentMethod: "paypal",
       paymentStatus: "paid",
       totalAmount: totalCartAmount,
@@ -115,7 +115,7 @@ const ShoppingCheckout = () => {
         })
         await dispatch(depositMoney({
           amount: amount,
-          userId: '6784ef3981b524e54479a6c7'
+          userId: '6785ac739d8373076183f286'
         }))
         sessionStorage.removeItem("currentOrderId");
         await delay(2000)
